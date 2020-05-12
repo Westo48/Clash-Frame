@@ -9,6 +9,10 @@
 *.user
 *.userosscache
 *.sln.docstates
+testing.py
+ClashDiscord.py
+ClashResponder.py
+notes.txt
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
