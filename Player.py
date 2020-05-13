@@ -78,8 +78,7 @@ class Player(object):
         for troop in self.troops:
             # formatting for P.E.K.K.A.
             formatted_troop_name = re.sub('[.]', '', troop.name)
-            if (formatted_troop_name.lower() ==
-                    troop_name.lower()):
+            if formatted_troop_name.lower() == troop_name.lower():
                 return troop
         return Troop(
             '',
@@ -108,14 +107,12 @@ class Troop(object):
 
 def get(tag, header):
     player_json = json_response(tag, header)
-    if ('townHallWeaponLevel' not in
-            player_json):
+    if 'townHallWeaponLevel' not in player_json:
         th_weap_lvl = 0
     else:
         th_weap_lvl = player_json['townHallWeaponLevel']
 
-    if ('builderHallLevel' not in
-            player_json):
+    if 'builderHallLevel' not in player_json:
         bh_lvl = 0
         vs_trophies = 0
         best_vs_trophies = 0
@@ -126,8 +123,7 @@ def get(tag, header):
         best_vs_trophies = player_json['bestVersusTrophies']
         vs_battle_wins = player_json['versusBattleWins']
 
-    if ('clan' not in
-            player_json):
+    if 'clan' not in player_json:
         role = ''
         clan_tag = ''
         clan_name = ''
@@ -138,8 +134,7 @@ def get(tag, header):
         clan_name = player_json['clan']['name']
         clan_lvl = player_json['clan']['clanLevel']
 
-    if ('league' not in
-            player_json):
+    if 'league' not in player_json:
         league_id = 0
         league_name = ''
     else:
@@ -148,8 +143,7 @@ def get(tag, header):
 
     troops = []
     for hero in player_json['heroes']:
-        if (hero['village'] ==
-                'home'):
+        if hero['village'] == 'home':
             troops.append(Troop(
                 hero['name'],
                 hero['level'],
@@ -161,8 +155,7 @@ def get(tag, header):
 
     # siege machines are part of 'troops' in the player_json
     for troop in player_json['troops']:
-        if (troop['village'] ==
-                'home'):
+        if troop['village'] == 'home':
             troops.append(Troop(
                 troop['name'], troop['level'],
                 troop['maxLevel'],
@@ -172,8 +165,7 @@ def get(tag, header):
             )
 
     for spell in player_json['spells']:
-        if (spell['village'] ==
-                'home'):
+        if spell['village'] == 'home':
             troops.append(Troop(
                 spell['name'],
                 spell['level'],

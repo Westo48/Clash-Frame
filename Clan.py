@@ -54,8 +54,7 @@ class Clan(object):
         )
         # search through all members in the clan
         for member in self.members:
-            if (member.name.lower() ==
-                    member_name.lower()):
+            if member.name.lower() == member_name.lower():
                 return member.tag
         return ''
 
@@ -102,8 +101,7 @@ def get(clan_tag, header):
 
     members = []
     for member in clan_json['memberList']:
-        if ('versusTrophies' not in
-                clan_json):
+        if 'versusTrophies' not in clan_json:
             vs_trophies = 0
         else:
             vs_trophies = member['versusTrophies']
