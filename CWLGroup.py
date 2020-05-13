@@ -5,7 +5,13 @@ from CWLWar import get as get_cwl_war
 
 
 class CWLGroup(object):
-    def __init__(self, state, season, clans, rounds):
+    def __init__(
+        self,
+        state,
+        season,
+        clans,
+        rounds
+    ):
         self.state = state
         self.season = season
         self.clans = clans
@@ -19,7 +25,8 @@ class CWLGroup(object):
                 return cwl_round[0]
             cwl_war = get_cwl_war(cwl_round[0], clan_tag, header)
             # given the correct round is found
-            if cwl_war.state == 'inWar' or cwl_war.state == 'preparation':
+            if (cwl_war.state == 'inWar'
+                    or cwl_war.state == 'preparation'):
                 # go through the war tags to find the correct clan tag
                 for war_tag in cwl_round:
                     cwl_war = get_cwl_war(war_tag, clan_tag, header)
@@ -53,16 +60,26 @@ class CWLGroup(object):
 
 
 class CWLClan(object):
-    def __init__(self, tag, name, clan_lvl, members):
+    def __init__(
+        self,
+        tag,
+        name,
+        clan_lvl,
+        members
+    ):
         self.tag = tag
         self.name = name
         self.clan_lvl = clan_lvl
         self.members = members
 
 
-# ? change player_tag and player_name to tag and name
 class CWLClanMember(object):
-    def __init__(self, tag, name, th_lvl):
+    def __init__(
+        self,
+        tag,
+        name,
+        th_lvl
+    ):
         self.tag = tag
         self.name = name
         self.th_lvl = th_lvl
@@ -78,9 +95,16 @@ def get(clan_tag, header):
         members = []
         for member in clan['members']:
             members.append(CWLClanMember(
-                member['tag'], member['name'], member['townHallLevel']))
-        clans.append(
-            CWLClan(clan['tag'], clan['name'], clan['clanLevel'], members))
+                member['tag'],
+                member['name'],
+                member['townHallLevel'])
+            )
+        clans.append(CWLClan(
+            clan['tag'],
+            clan['name'],
+            clan['clanLevel'],
+            members)
+        )
 
     # grab a list of the rounds
     rounds = []
@@ -90,7 +114,12 @@ def get(clan_tag, header):
             war_tags.append(war_tag)
         rounds.append(war_tags)
 
-    return CWLGroup(group_json['state'], group_json['season'], clans, rounds)
+    return CWLGroup(
+        group_json['state'],
+        group_json['season'],
+        clans,
+        rounds
+    )
 
 
 def json_response(tag, header):
