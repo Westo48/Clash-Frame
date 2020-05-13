@@ -168,7 +168,8 @@ def get(tag, header):
                 troop['maxLevel'],
                 troop_dict[player_json['townHallLevel']
                            ]['troop'][troop['name']]['thMax'],
-                troop['village']))
+                troop['village'])
+            )
 
     for spell in player_json['spells']:
         if (spell['village'] ==
