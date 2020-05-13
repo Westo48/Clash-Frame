@@ -4,7 +4,32 @@ import re
 
 
 class Player(object):
-    def __init__(self, tag, name, th_lvl, th_weapon_lvl, xp_lvl, trophies, best_trophies, war_stars, attack_wins, defense_wins, builder_hall_lvl, vs_trophies, best_vs_trophies, vs_battle_wins, role, donations, donations_received, clan_tag, clan_name, clan_lvl, league_id, league_name, troops):
+    def __init__(
+        self,
+        tag,
+        name,
+        th_lvl,
+        th_weapon_lvl,
+        xp_lvl,
+        trophies,
+        best_trophies,
+        war_stars,
+        attack_wins,
+        defense_wins,
+        builder_hall_lvl,
+        vs_trophies,
+        best_vs_trophies,
+        vs_battle_wins,
+        role,
+        donations,
+        donations_received,
+        clan_tag,
+        clan_name,
+        clan_lvl,
+        league_id,
+        league_name,
+        troops
+    ):
         self.tag = tag
         self.name = name
         self.th_lvl = th_lvl
@@ -40,18 +65,40 @@ class Player(object):
     # return a Troop object
     def find_troop(self, troop_name):
         # formatting the name from '-' to ' '
-        troop_name = re.sub('[-]', ' ', troop_name)
-        troop_name = re.sub('[.]', '', troop_name)
+        troop_name = re.sub(
+            '[-]',
+            ' ',
+            troop_name
+        )
+        troop_name = re.sub(
+            '[.]',
+            '',
+            troop_name
+        )
         for troop in self.troops:
             # formatting for P.E.K.K.A.
             formatted_troop_name = re.sub('[.]', '', troop.name)
-            if formatted_troop_name.lower() == troop_name.lower():
+            if (formatted_troop_name.lower() ==
+                    troop_name.lower()):
                 return troop
-        return Troop('', 0, 0, 0, '')
+        return Troop(
+            '',
+            0,
+            0,
+            0,
+            ''
+        )
 
 
 class Troop(object):
-    def __init__(self, name, lvl, max_lvl, th_max, village):
+    def __init__(
+        self,
+        name,
+        lvl,
+        max_lvl,
+        th_max,
+        village
+    ):
         self.name = name
         self.lvl = lvl
         self.max_lvl = max_lvl
@@ -61,12 +108,14 @@ class Troop(object):
 
 def get(tag, header):
     player_json = json_response(tag, header)
-    if 'townHallWeaponLevel' not in player_json:
+    if ('townHallWeaponLevel' not in
+            player_json):
         th_weap_lvl = 0
     else:
         th_weap_lvl = player_json['townHallWeaponLevel']
 
-    if 'builderHallLevel' not in player_json:
+    if ('builderHallLevel' not in
+            player_json):
         bh_lvl = 0
         vs_trophies = 0
         best_vs_trophies = 0
@@ -77,7 +126,8 @@ def get(tag, header):
         best_vs_trophies = player_json['bestVersusTrophies']
         vs_battle_wins = player_json['versusBattleWins']
 
-    if 'clan' not in player_json:
+    if ('clan' not in
+            player_json):
         role = ''
         clan_tag = ''
         clan_name = ''
@@ -88,7 +138,8 @@ def get(tag, header):
         clan_name = player_json['clan']['name']
         clan_lvl = player_json['clan']['clanLevel']
 
-    if 'league' not in player_json:
+    if ('league' not in
+            player_json):
         league_id = 0
         league_name = ''
     else:
@@ -97,18 +148,21 @@ def get(tag, header):
 
     troops = []
     for hero in player_json['heroes']:
-        if hero['village'] == 'home':
+        if (hero['village'] ==
+                'home'):
             troops.append(Troop(
                 hero['name'],
                 hero['level'],
                 hero['maxLevel'],
                 troop_dict[player_json['townHallLevel']
                            ]['hero'][hero['name']]['thMax'],
-                hero['village']))
+                hero['village'])
+            )
 
     # siege machines are part of 'troops' in the player_json
     for troop in player_json['troops']:
-        if troop['village'] == 'home':
+        if (troop['village'] ==
+                'home'):
             troops.append(Troop(
                 troop['name'], troop['level'],
                 troop['maxLevel'],
@@ -117,16 +171,42 @@ def get(tag, header):
                 troop['village']))
 
     for spell in player_json['spells']:
-        if spell['village'] == 'home':
+        if (spell['village'] ==
+                'home'):
             troops.append(Troop(
                 spell['name'],
                 spell['level'],
                 spell['maxLevel'],
                 troop_dict[player_json['townHallLevel']
                            ]['spell'][spell['name']]['thMax'],
-                spell['village']))
+                spell['village'])
+            )
 
-    return Player(tag, player_json['name'], player_json['townHallLevel'], th_weap_lvl, player_json['expLevel'], player_json['trophies'], player_json['bestTrophies'], player_json['warStars'], player_json['attackWins'], player_json['defenseWins'], bh_lvl, vs_trophies, best_vs_trophies, vs_battle_wins, role, player_json['donations'], player_json['donationsReceived'], clan_tag, clan_name, clan_lvl, league_id, league_name, troops)
+    return Player(
+        tag,
+        player_json['name'],
+        player_json['townHallLevel'],
+        th_weap_lvl,
+        player_json['expLevel'],
+        player_json['trophies'],
+        player_json['bestTrophies'],
+        player_json['warStars'],
+        player_json['attackWins'],
+        player_json['defenseWins'],
+        bh_lvl,
+        vs_trophies,
+        best_vs_trophies,
+        vs_battle_wins,
+        role,
+        player_json['donations'],
+        player_json['donationsReceived'],
+        clan_tag,
+        clan_name,
+        clan_lvl,
+        league_id,
+        league_name,
+        troops
+    )
 
 
 def json_response(tag, header):
