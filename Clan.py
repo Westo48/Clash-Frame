@@ -2,6 +2,50 @@ import requests
 import json
 import re
 
+"""
+    Clan
+
+        Instance Attributes
+
+            tag: str
+            name: str
+            clan_type: str
+            description: str
+            clan_lvl: int
+            donation_upgrade: int
+            clan_points: int
+            clan_vs_points: int
+            required_trophies: int
+            war_frequency: str
+            war_win_streak: int
+            war_wins: int
+            war_ties: int
+            war_losses: int
+            is_war_log_public: bool
+            war_league_id: int
+            war_league_name: str
+            members: list
+                ClanMember objects
+
+    ClanMember
+
+        Instance Attributes
+
+            tag: str
+            name: str
+            role: str
+            exp_lvl: int
+            league_id: int
+            league_name: str
+            trophies: int
+            vs_trophies: int
+            clan_rank: int
+            previous_clan_rank: int
+            donations: int
+            donations_received: int
+
+"""
+
 
 class Clan(object):
     def __init__(

@@ -2,6 +2,57 @@ import requests
 import json
 from datetime import datetime, timedelta
 
+"""
+    War
+
+        Instance Attributes
+        
+            state: str
+            team_size: int
+            preparation_start_time: str
+            start_time: str
+            end_time: str
+            clan: WarClan
+            opponent: WarClan
+
+    WarClan
+
+        Instance Attributes
+        
+            status: str
+            tag: str
+            name: str
+            lvl: int
+            attack_count: int
+            stars: int
+            destruction_percentage: int
+            members: list
+                WarMember objects
+
+    WarMember
+
+        Instance Attributes
+
+            tag: str
+            name: str
+            th_lvl: int
+            map_position: int
+            stars: int
+            attacks: list
+                WarMemberAttack objects
+
+    WarMemberAttack
+
+        Instance Attributes
+
+            attacker_tag: str
+            defender_tag: str
+            stars: int
+            destruction_percent: int
+            order: int
+
+"""
+
 
 class War(object):
     def __init__(

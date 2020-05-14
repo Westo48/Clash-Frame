@@ -2,6 +2,48 @@ import requests
 import json
 import re
 
+"""
+    Player
+
+        Instance Attributes
+
+            tag: str
+            name: str
+            th_lvl: int
+            th_weapon_lvl: int
+            xp_lvl: int
+            trophies: int
+            best_trophies: int
+            war_stars: int
+            attack_wins: int
+            defense_wins: int
+            builder_hall_lvl: int
+            vs_trophies: int
+            best_vs_trophies: int
+            vs_battle_wins: int
+            role: str
+            donations: int
+            donations_received: int
+            clan_tag: str
+            clan_name: str
+            clan_lvl: int
+            league_id: int
+            league_name: str
+            troops: list
+                Troop objects
+
+    Troop
+
+        Instance Attributes
+            
+            name: str
+            lvl: int
+            max_lvl: int
+            th_max: int
+            village: str
+
+"""
+
 
 class Player(object):
     def __init__(

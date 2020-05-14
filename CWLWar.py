@@ -3,6 +3,58 @@ import json
 import War
 from War import clan_opp_status
 
+"""
+    CWLWar
+
+        Instance Attributes
+
+            tag: str
+            state: str
+            team_size: int
+            preparation_start_time: str
+            start_time: str
+            end_time: str
+            clan: CWLWarClan
+            opponent: CWLWarClan
+
+    CWLWarClan
+
+        Instance Attributes
+
+            status: str
+            tag: str
+            name: str
+            lvl: int
+            attack_count: int
+            stars: int
+            destruction_percentage: int
+            members: list
+                CWLWarMember
+
+    CWLWarMember
+
+        Instance Attributes
+
+            tag: str
+            name: str
+            th_lvl: int
+            map_position: int
+            stars: int
+            attacks: list
+                CWLWarMemberAttack
+
+    CWLWarMemberAttack
+
+        Instance Attributes
+
+            attacker_tag: str
+            defender_tag: str
+            stars: int
+            destruction_percent: int
+            order: int
+
+"""
+
 
 class CWLWar(War.War):
     def __init__(

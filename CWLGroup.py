@@ -3,6 +3,37 @@ import json
 import CWLWar
 from CWLWar import get as get_cwl_war
 
+"""
+    CWLGroup
+
+        Instance Attributes
+
+            state: str
+            season: str
+            clans: list
+                GWLClan
+            rounds: list
+
+    CWLClan
+
+        Instance Attributes
+
+            tag: str
+            name: str
+            clan_lvl: int
+            members: list
+                CWLClanMember
+
+    CWLClanMember
+
+        Instance Attributes
+
+            tag: str
+            name: str
+            th_lvl: int
+        
+"""
+
 
 class CWLGroup(object):
     def __init__(
