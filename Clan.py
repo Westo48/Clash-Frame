@@ -2,11 +2,12 @@ import requests
 import json
 import re
 
-"""
+
+class Clan(object):
+
+    """
     Clan
-
         Instance Attributes
-
             tag: str
             name: str
             clan_type: str
@@ -26,48 +27,13 @@ import re
             war_league_name: str
             members: list
                 ClanMember objects
+    """
 
-    ClanMember
-
-        Instance Attributes
-
-            tag: str
-            name: str
-            role: str
-            exp_lvl: int
-            league_id: int
-            league_name: str
-            trophies: int
-            vs_trophies: int
-            clan_rank: int
-            previous_clan_rank: int
-            donations: int
-            donations_received: int
-
-"""
-
-
-class Clan(object):
     def __init__(
-        self,
-        tag,
-        name,
-        clan_type,
-        description,
-        clan_lvl,
-        donation_upgrade,
-        clan_points,
-        clan_vs_points,
-        required_trophies,
-        war_frequency,
-        war_win_streak,
-        war_wins,
-        war_ties,
-        war_losses,
-        is_war_log_public,
-        war_league_id,
-        war_league_name,
-        members
+        self, tag, name, clan_type, description, clan_lvl, donation_upgrade,
+        clan_points, clan_vs_points, required_trophies,
+        war_frequency, war_win_streak, war_wins, war_ties, war_losses,
+        is_war_log_public, war_league_id, war_league_name, members
     ):
         self.tag = tag
         self.name = name
@@ -91,11 +57,7 @@ class Clan(object):
     # returns the player tag of the member
     def find_member(self, member_name):
         # formatting the name from '-' to ' '
-        member_name = re.sub(
-            '[-]',
-            ' ',
-            member_name
-        )
+        member_name = re.sub('[-]', ' ', member_name)
         # search through all members in the clan
         for member in self.members:
             if member.name.lower() == member_name.lower():
@@ -104,20 +66,31 @@ class Clan(object):
 
 
 class ClanMember(object):
+    """
+    ClanMember
+        Instance Attributes
+            tag (str): The clan member's player tag
+            name (str): The clan member's player name
+            role (str): The clan member's role in the clan
+            exp_lvl (int): The clan member's player experience level
+            league_id (int): The clan member's player league ID
+            league_name (str): The clan member's player league name
+            trophies (int): The clan member's player trophie count
+            vs_trophies (int): The clan member's player versus trophie count
+            clan_rank (int): The clan member's rank in the clan
+                current season
+            previous_clan_rank (int): The clan member's prior rank in the clan
+                current season
+            donations (int): The clan member's donations given
+                current season
+            donations_received (int): The clan member's donations received
+                current season
+    """
+
     def __init__(
-        self,
-        tag,
-        name,
-        role,
-        exp_lvl,
-        league_id,
-        league_name,
-        trophies,
-        vs_trophies,
-        clan_rank,
-        previous_clan_rank,
-        donations,
-        donations_received
+        self, tag, name, role, exp_lvl, league_id, league_name,
+        trophies, vs_trophies, clan_rank, previous_clan_rank,
+        donations, donations_received
     ):
         self.tag = tag
         self.name = name
@@ -126,7 +99,6 @@ class ClanMember(object):
         self.league_id = league_id
         self.league_name = league_name
         self.trophies = trophies
-        # vs trophies may not always be there
         self.vs_trophies = vs_trophies
         self.clan_rank = clan_rank
         self.previous_clan_rank = previous_clan_rank
@@ -135,6 +107,8 @@ class ClanMember(object):
 
 
 def get(clan_tag, header):
+    """Takes in the clan's tag and returns a Clan object"""
+
     clan_json = json_response(clan_tag, header)
     if clan_json['clanLevel'] < 5:
         donation_upgrade = 0
@@ -150,39 +124,21 @@ def get(clan_tag, header):
         else:
             vs_trophies = member['versusTrophies']
         members.append(ClanMember(
-            member['tag'],
-            member['name'],
-            member['role'],
-            member['expLevel'],
-            member['league']['id'],
-            member['league']['name'],
-            member['trophies'],
-            vs_trophies,
-            member['clanRank'],
-            member['previousClanRank'],
-            member['donations'],
+            member['tag'], member['name'], member['role'], member['expLevel'],
+            member['league']['id'], member['league']['name'],
+            member['trophies'], vs_trophies, member['clanRank'],
+            member['previousClanRank'], member['donations'],
             member['donationsReceived'])
         )
 
     return Clan(
-        clan_json['tag'],
-        clan_json['name'],
-        clan_json['type'],
-        clan_json['description'],
-        clan_json['clanLevel'],
-        donation_upgrade,
-        clan_json['clanPoints'],
-        clan_json['clanVersusPoints'],
-        clan_json['requiredTrophies'],
-        clan_json['warFrequency'],
-        clan_json['warWinStreak'],
-        clan_json['warWins'],
-        clan_json['warTies'],
-        clan_json['warLosses'],
-        clan_json['isWarLogPublic'],
-        clan_json['warLeague']['id'],
-        clan_json['warLeague']['name'],
-        members
+        clan_json['tag'], clan_json['name'], clan_json['type'],
+        clan_json['description'], clan_json['clanLevel'], donation_upgrade,
+        clan_json['clanPoints'], clan_json['clanVersusPoints'],
+        clan_json['requiredTrophies'], clan_json['warFrequency'],
+        clan_json['warWinStreak'], clan_json['warWins'], clan_json['warTies'],
+        clan_json['warLosses'], clan_json['isWarLogPublic'],
+        clan_json['warLeague']['id'], clan_json['warLeague']['name'], members
     )
 
 
