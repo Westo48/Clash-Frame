@@ -127,5 +127,6 @@ def get(clan_tag, header):
 
 def json_response(tag, header):
     tag = tag[1:]
-    url = f'https://api.clashofclans.com/v1/clans/%23{tag}/currentwar/leaguegroup'
+    url = f'https://api.clashofclans.com/v1/clans/%23{tag}'\
+        '/currentwar/leaguegroup'
     return requests.get(url, headers=header).json()
