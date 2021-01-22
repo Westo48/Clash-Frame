@@ -44,7 +44,9 @@ class Player(object):
             league_name (str): name of the league the player is in
                 not available if player is not in a league
             league_icons (dict): dict of league icons
+            heroes (list): list of Hero objects
             troops (list): list of Troop objects
+            spells (list): list of Spell objects
     """
 
     def __init__(
@@ -52,7 +54,8 @@ class Player(object):
         trophies, best_trophies, war_stars, attack_wins, defense_wins,
         builder_hall_lvl, vs_trophies, best_vs_trophies, vs_battle_wins,
         role, donations, donations_received, clan_tag, clan_name, clan_lvl,
-        clan_icons, league_id, league_name, league_icons, troops
+        clan_icons, league_id, league_name, league_icons,
+        heroes, troops, spells
     ):
         self.tag = tag
         self.name = name
@@ -78,23 +81,51 @@ class Player(object):
         self.league_id = league_id
         self.league_name = league_name
         self.league_icons = league_icons
+        self.heroes = heroes
         self.troops = troops
+        self.spells = spells
 
-    def find_troop(self, troop_name):
+    def find_unit(self, unit_name):
         """
-            Take in a troop name and returns a Troop object.
-            If no troop is found return None.
+            Take in a unit name and return the corresponding unit object.
+            If no unit is found returns None.
         """
 
         # formatting the name from '-' to ' '
-        troop_name = re.sub('[-]', ' ', troop_name)
-        troop_name = re.sub('[.]', '', troop_name)
+        unit_name = re.sub('[-]', ' ', unit_name)
+        unit_name = re.sub('[.]', '', unit_name)
+        for hero in heroes:
+            if hero.name.lower() == unit_name.lower():
+                return hero
         for troop in self.troops:
             # formatting for P.E.K.K.A.
-            formatted_troop_name = re.sub('[.]', '', troop.name)
-            if formatted_troop_name.lower() == troop_name.lower():
+            formatted_unit_name = re.sub('[.]', '', troop.name)
+            if formatted_unit_name.lower() == unit_name.lower():
                 return troop
+        for spell in spells:
+            if spell.name.lower() == unit_name.lower():
+                return spell
         return None
+
+
+class Hero(object):
+    """
+    Hero
+        Instance Attributes
+            name (str): The name of the hero
+            lvl (int): The level of the Player's hero
+            max_lvl (int): The max level of the hero
+            th_max (int): Max hero level for the Player's town hall level
+            village (str): Base the hero comes from
+                'home' or 'builderBase'
+    """
+
+    def __init__(self, name, lvl, max_lvl, th_max, village):
+        self.name = name
+        self.lvl = lvl
+        self.max_lvl = max_lvl
+        self.th_max = th_max
+        self.village = village
 
 
 class Troop(object):
@@ -117,19 +148,36 @@ class Troop(object):
         self.village = village
 
 
+class Spell(object):
+    """
+    Spell
+        Instance Attributes
+            name (str): The name of the spell
+            lvl (int): The level of the Player's spell
+            max_lvl (int): The max level of the spell
+            th_max (int): Max spell level for the Player's town hall level
+            village (str): Base the spell comes from
+                'home' or 'builderBase'
+    """
+
+    def __init__(self, name, lvl, max_lvl, th_max, village):
+        self.name = name
+        self.lvl = lvl
+        self.max_lvl = max_lvl
+        self.th_max = th_max
+        self.village = village
+
+
 # todo make comments for inner workings of get method
-# todo separate Troops and Heroes
+# todo legends league stats
+# ? include all troops whether they are unlocked or not
 def get(tag, header):
     """Takes in a player's tag and returns a Player object"""
 
     player_json = json_response(tag, header)
 
-    # ? return none if a player is not found
     if 'reason' in player_json:
-        return Player(
-            0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            '0', 0, 0, 0, '0', 0, {}, 0, '0', {}, []
-        )
+        None
 
     if 'townHallWeaponLevel' in player_json:
         th_weap_lvl = player_json['townHallWeaponLevel']
@@ -177,16 +225,17 @@ def get(tag, header):
         league_name = None
         league_icons = None
 
-    troops = []
+    heroes = []
     for hero in player_json['heroes']:
         if hero['village'] == 'home':
-            troops.append(Troop(
+            heroes.append(Hero(
                 hero['name'], hero['level'], hero['maxLevel'],
                 troop_dict[player_json['townHallLevel']
                            ]['hero'][hero['name']]['thMax'],
                 hero['village'])
             )
 
+    troops = []
     # siege machines are part of 'troops' in the player_json
     for troop in player_json['troops']:
         if (troop['village'] == 'home'
@@ -198,9 +247,10 @@ def get(tag, header):
                 troop['village'])
             )
 
+    spells = []
     for spell in player_json['spells']:
         if spell['village'] == 'home':
-            troops.append(Troop(
+            spells.append(Spell(
                 spell['name'], spell['level'], spell['maxLevel'],
                 troop_dict[player_json['townHallLevel']
                            ]['spell'][spell['name']]['thMax'],
@@ -215,7 +265,7 @@ def get(tag, header):
         bh_lvl, vs_trophies, best_vs_trophies, vs_battle_wins,
         role, player_json['donations'], player_json['donationsReceived'],
         clan_tag, clan_name, clan_lvl, clan_icons,
-        league_id, league_name, league_icons, troops
+        league_id, league_name, league_icons, heroes, troops, spells
     )
 
 
