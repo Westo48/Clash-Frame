@@ -3,7 +3,6 @@ import json
 import re
 
 
-# todo make hero, troop, and spell lists
 class Player(object):
     """
     Player
