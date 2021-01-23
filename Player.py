@@ -93,7 +93,7 @@ class Player(object):
         # formatting the name from '-' to ' '
         unit_name = re.sub('[-]', ' ', unit_name)
         unit_name = re.sub('[.]', '', unit_name)
-        for hero in heroes:
+        for hero in self.heroes:
             if hero.name.lower() == unit_name.lower():
                 return hero
         for troop in self.troops:
@@ -101,8 +101,52 @@ class Player(object):
             formatted_unit_name = re.sub('[.]', '', troop.name)
             if formatted_unit_name.lower() == unit_name.lower():
                 return troop
-        for spell in spells:
+        for spell in self.spells:
             if spell.name.lower() == unit_name.lower():
+                return spell
+        return None
+
+    def find_hero(self, hero_name):
+        """
+            Take in a hero name and return the corresponding hero object.
+            If no hero is found returns None.
+        """
+
+        # formatting the name from '-' to ' '
+        hero_name = re.sub('[-]', ' ', hero_name)
+        hero_name = re.sub('[.]', '', hero_name)
+        for hero in self.heroes:
+            if hero.name.lower() == hero_name.lower():
+                return hero
+        return None
+
+    def find_troop(self, troop_name):
+        """
+            Take in a troop name and return the corresponding troop object.
+            If no troop is found returns None.
+        """
+
+        # formatting the name from '-' to ' '
+        troop_name = re.sub('[-]', ' ', troop_name)
+        troop_name = re.sub('[.]', '', troop_name)
+        for troop in self.troops:
+            # formatting for P.E.K.K.A.
+            formatted_troop_name = re.sub('[.]', '', troop.name)
+            if formatted_troop_name.lower() == troop_name.lower():
+                return troop
+        return None
+
+    def find_spell(self, spell_name):
+        """
+            Take in a spell name and return the corresponding spell object.
+            If no spell is found returns None.
+        """
+
+        # formatting the name from '-' to ' '
+        spell_name = re.sub('[-]', ' ', spell_name)
+        spell_name = re.sub('[.]', '', spell_name)
+        for spell in self.spells:
+            if spell.name.lower() == spell_name.lower():
                 return spell
         return None
 
